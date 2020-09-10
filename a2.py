@@ -6,33 +6,33 @@ import numpy as np
 # Read data from file 'dataset_missing05.csv'
 # (in the same directory that your python process is based)
 # Control delimiters, rows, column names with read_csv
-data_05 = pd.read_csv("dataset_missing05.csv")
+data_01 = pd.read_csv("dataset_missing01.csv")
 
 data_20 = pd.read_csv("dataset_missing20.csv")
 
 data_complete = pd.read_csv("dataset_complete(1).csv")
 
 # Converts object to data frame
-df_05 = pd.DataFrame(data_05)
+df_01 = pd.DataFrame(data_01)
 
 df_20 = pd.DataFrame(data_20)
 
 df_complete = pd.DataFrame(data_complete)
 
 # Replace all ? with a NaN value to calculate the mean
-dfr_05 = df_05.replace('?', np.nan)
+dfr_01 = df_01.replace('?', np.nan)
 
 dfr_20 = df_20.replace('?', np.nan)
 
 # Converts all column data types to floats
-dfr_05['F1'] = dfr_05['F1'].astype(float)
-dfr_05['F2'] = dfr_05['F2'].astype(float)
-dfr_05['F3'] = dfr_05['F3'].astype(float)
-dfr_05['F4'] = dfr_05['F4'].astype(float)
-dfr_05['F5'] = dfr_05['F5'].astype(float)
-dfr_05['F6'] = dfr_05['F6'].astype(float)
-dfr_05['F7'] = dfr_05['F7'].astype(float)
-dfr_05['F8'] = dfr_05['F8'].astype(float)
+dfr_01['F1'] = dfr_01['F1'].astype(float)
+dfr_01['F2'] = dfr_01['F2'].astype(float)
+dfr_01['F3'] = dfr_01['F3'].astype(float)
+dfr_01['F4'] = dfr_01['F4'].astype(float)
+dfr_01['F5'] = dfr_01['F5'].astype(float)
+dfr_01['F6'] = dfr_01['F6'].astype(float)
+dfr_01['F7'] = dfr_01['F7'].astype(float)
+dfr_01['F8'] = dfr_01['F8'].astype(float)
 
 dfr_20['F1'] = dfr_20['F1'].astype(float)
 dfr_20['F2'] = dfr_20['F2'].astype(float)
@@ -43,13 +43,13 @@ dfr_20['F6'] = dfr_20['F6'].astype(float)
 dfr_20['F7'] = dfr_20['F7'].astype(float)
 dfr_20['F8'] = dfr_20['F8'].astype(float)
 
-missing_values_05 = dfr_05.isnull().sum().sum()
+missing_values_01 = dfr_01.isnull().sum().sum()
 
 missing_values_20 = dfr_20.isnull().sum().sum()
 
 # Fill in imputed values with mean of columns for 5% missing
-dfr_05_imputed = dfr_05.fillna(dfr_05.mean())
-export_dfr_05_imputed = dfr_05_imputed.to_csv(r'/Users/westdc/Desktop/CMSC 435/Assignment 2/00844444_missing05_imputed_mean.csv', index = None, header=True)
+dfr_01_imputed = dfr_01.fillna(dfr_01.mean())
+export_dfr_01_imputed = dfr_01_imputed.to_csv(r'/Users/westdc/Desktop/CMSC 435/Assignment 2/00844444_missing05_imputed_mean.csv', index = None, header=True)
 
 # Fill in imputed values with mean of columns for 20% missing
 dfr_20_imputed = dfr_20.fillna(dfr_20.mean())
@@ -57,13 +57,13 @@ export_dfr_20_imputed = dfr_20_imputed.to_csv(r'/Users/westdc/Desktop/CMSC 435/A
 
 
 ##### Algorithm 2 Starts here, data is split up as yes and no #####
-dfr_05_yes = dfr_05.loc[(dfr_05['Class']=="Yes"), ['F1','F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'Class']]
-dfr_05_no = dfr_05.loc[(dfr_05['Class']=="No"), ['F1','F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'Class']]
+dfr_01_yes = dfr_01.loc[(dfr_01['Class']=="Yes"), ['F1','F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'Class']]
+dfr_01_no = dfr_01.loc[(dfr_01['Class']=="No"), ['F1','F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'Class']]
 
-dfr_05_imputed_yes = dfr_05_yes.fillna(dfr_05_yes.mean())
-dfr_05_imputed_no = dfr_05_no.fillna(dfr_05_no.mean())
-dfr_05_concat = pd.concat([dfr_05_imputed_yes, dfr_05_imputed_no])
-export_dfr_05_imputed_concat = dfr_05_concat.to_csv(r'/Users/westdc/Desktop/CMSC 435/Assignment 2/00844444_missing05_imputed_mean_conditional.csv', index = None, header=True)
+dfr_01_imputed_yes = dfr_01_yes.fillna(dfr_01_yes.mean())
+dfr_01_imputed_no = dfr_01_no.fillna(dfr_01_no.mean())
+dfr_01_concat = pd.concat([dfr_01_imputed_yes, dfr_01_imputed_no])
+export_dfr_01_imputed_concat = dfr_01_concat.to_csv(r'/Users/westdc/Desktop/CMSC 435/Assignment 2/00844444_missing05_imputed_mean_conditional.csv', index = None, header=True)
 
 
 dfr_20_yes = dfr_20.loc[(dfr_20['Class']=="Yes"), ['F1','F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'Class']]
@@ -126,10 +126,11 @@ def mae_calculator(dataset, missing):
     final_total = total1 + total2 + total3 + total4 + total5 + total6 + total7 + total8
 
     mae = 1/missing * final_total
-    return round(mae, 4);
+    return round(mae, 4)
 
-print("MAE_05_mean = ", mae_calculator(dfr_05_imputed, missing_values_05))
-print("MAE_05_mean_conditional = ", mae_calculator(dfr_05_concat, missing_values_05), '\n')
+
+print("MAE_01_mean = ", mae_calculator(dfr_01_imputed, missing_values_01))
+print("MAE_01_mean_conditional = ", mae_calculator(dfr_01_concat, missing_values_01), '\n')
 
 print("MAE_20_mean = ", mae_calculator(dfr_20_imputed, missing_values_20))
 print("MAE_20_mean_conditional = ", mae_calculator(dfr_20_concat, missing_values_20), '\n')
